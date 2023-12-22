@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Website Bootstrap</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        .transaction {
+            margin: 10px 0;
+        }
+
+        .black {
+            background-color: #f3cb51;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .green {
+            background-color: #006D5B;
+            color: white;
+            border-radius: 10px;
+        }
+
+        .red {
+            background-color: #BF0A30;
+            color: white;
+            border-radius: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animated-text {
+            animation: fadeIn 2s;
+        }
+    </style>
+    <link href="css/button.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-10 black" id="balance">
+                <h1 id="balance-text">Total: Rp0</h1>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-5 green">
+                <br>
+                <input type="number" class="form-control" id="money" placeholder="Jumlah uang">
+                <br><br>
+                <input type="text" class="form-control" id="note" placeholder="keterangan">
+                <br>
+                <div class="container">
+                    <a href="#" class="button" onclick="addMoney()">
+                        <div class="button__line"></div>
+                        <div class="button__line"></div>
+                        <span class="button__text">TAMBAH</span>
+                        <div class="button__drow1"></div>
+                        <div class="button__drow2"></div>
+                    </a>
+                </div>
+                <div class="container">
+                    <a href="#" class="button" onclick="subtractMoney()">
+                        <div class="button__line"></div>
+                        <div class="button__line"></div>
+                        <span class="button__text">KURANGI</span>
+                        <div class="button__drow1"></div>
+                        <div class="button__drow2"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div id="transactions"></div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        let balance = 0;
+const balanceDiv = document.getElementById('balance');
+const balanceText = document.getElementById('balance-text');
+const transactionsDiv = document.getElementById('transactions');
+
+// Load history from localStorage
+if (localStorage.getItem('history')) {
+    transactionsDiv.innerHTML = localStorage.getItem('history');
+}
+
+// Load balance from localStorage
+if (localStorage.getItem('balance')) {
+    balance = Number(localStorage.getItem('balance'));
+    balanceText.textContent = 'Total: Rp' + balance;
+}
+
+function addMoney() {
+    const money = Number(document.getElementById('money').value);
+    const note = document.getElementById('note').value;
+    balance += money;
+    balanceText.textContent = 'Total: Rp' + balance;
+    const p = document.createElement('p');
+    p.textContent = 'Tambah: Rp' + money + ' (' + note + ')';
+    p.classList.add('animated-text');
+    transactionsDiv.appendChild(p);
+    document.getElementById('money').value = '';
+    document.getElementById('note').value = '';
+
+    // Save history to localStorage
+    localStorage.setItem('history', transactionsDiv.innerHTML);
+
+    // Save balance to localStorage
+    localStorage.setItem('balance', balance);
+}
+
+function subtractMoney() {
+    const money = Number(document.getElementById('money').value); // change 'money2' to 'money'
+    const note = document.getElementById('note').value; // change 'note2' to 'note'
+    balance -= money;
+    balanceText.textContent = 'Total: Rp' + balance;
+    const p = document.createElement('p');
+    p.textContent = 'Kurangi: Rp' + money + ' (' + note + ')';
+    p.classList.add('animated-text');
+    transactionsDiv.appendChild(p);
+    document.getElementById('money').value = '';
+    document.getElementById('note').value = '';
+
+    // Save history to localStorage
+    localStorage.setItem('history', transactionsDiv.innerHTML);
+
+    // Save balance to localStorage
+    localStorage.setItem('balance', balance);
+}
+
+
+    </script>
+</body>
+
+</html>
